@@ -1,0 +1,344 @@
+FED_NUM,Riding Name,Party,Candidate,Vote %,Margin
+10001,"Avalon",LPC,"Paul Connors",58.6,22.6
+10002,"Cape Spear",LPC,"Tom Osborne",68.3,42.5
+10003,"Central Newfoundland",CPC,"Clifford Small",54.1,10.5
+10004,"Labrador",LPC,"Philip Earle",51.5,9.8
+10005,"Long Range Mountains",CPC,"Carol Anstey",50.3,7.6
+10006,"St. John's East",LPC,"Joanne Thompson",62.3,36.4
+10007,"Terra Nova--The Peninsulas",CPC,"Jonathan Rowe",48.0,0.0
+11001,"Cardigan",LPC,"Kent MacDonald",57.0,19.6
+11002,"Charlottetown",LPC,"Sean Casey",64.8,35.6
+11003,"Egmont",LPC,"Bobby Morrissey",51.9,8.5
+11004,"Malpeque",LPC,"Heath MacDonald",57.6,21.0
+12001,"Acadie--Annapolis",CPC,"Chris d'Entremont",47.7,1.1
+12002,"Cape Breton--Canso--Antigonish",LPC,"Jaime Battiste",51.6,8.4
+12003,"Central Nova",LPC,"Sean Fraser",51.9,9.2
+12004,"Cumberland--Colchester",LPC,"Alana Hirtle",48.3,2.5
+12005,"Dartmouth--Cole Harbour",LPC,"Darren Fisher",67.7,45.0
+12006,"Halifax",LPC,"Shannon Miedema",63.0,44.0
+12007,"Halifax West",LPC,"Lena Metlege Diab",65.6,38.4
+12008,"Kings--Hants",LPC,"Kody Blois",60.6,27.1
+12009,"Sackville--Bedford--Preston",LPC,"Braedon Clark",62.0,29.6
+12010,"South Shore--St. Margarets",LPC,"Jessica Fancy-Landry",54.9,13.7
+12011,"Sydney--Glace Bay",LPC,"Mike Kelloway",54.6,16.5
+13001,"Acadie--Bathurst",LPC,"Serge Cormier",67.5,41.5
+13002,"Beaus\u00e9jour",LPC,"Dominic LeBlanc",60.6,27.3
+13003,"Fredericton--Oromocto",LPC,"David Myles",61.3,29.0
+13004,"Fundy Royal",CPC,"Rob Moore",53.4,13.2
+13005,"Madawaska--Restigouche",LPC,"Guillaume Desch\u00eanes-Th\u00e9riault",55.2,15.5
+13006,"Miramichi--Grand Lake",CPC,"Mike Dawson",48.2,1.0
+13007,"Moncton--Dieppe",LPC,"Ginette Petitpas Taylor",63.0,31.8
+13008,"Saint John--Kennebecasis",LPC,"Wayne Long",58.1,20.8
+13009,"Saint John--St. Croix",CPC,"John Williamson",53.1,11.6
+13010,"Tobique--Mactaquac",CPC,"Richard Bragdon",58.8,22.9
+24001,"Abitibi--Baie-James--Nunavik--Eeyou",LPC,"Mandy Gull-Masty",41.2,7.2
+24002,"Abitibi--T\u00e9miscamingue",BQ,"S\u00e9bastien Lemire",49.4,22.4
+24003,"Ahuntsic-Cartierville",LPC,"M\u00e9lanie Joly",61.0,44.1
+24004,"Alfred-Pellan",LPC,"Angelo Iacono",54.6,33.6
+24005,"Argenteuil--La Petite-Nation",LPC,"St\u00e9phane Lauzon",47.5,22.7
+24006,"Beauce",CPC,"Jason Groleau",59.7,40.6
+24007,"Beauharnois--Salaberry--Soulanges--Huntingdon",BQ,"Claude Debellefeuille",43.9,11.8
+24008,"Beauport--Limoilou",LPC,"Steeve Lavoie",35.6,5.5
+24009,"B\u00e9cancour--Nicolet--Saurel--Aln\u00f4bak",BQ,"Louis Plamondon",47.0,19.7
+24010,"Bellechasse--Les Etchemins--L\u00e9vis",CPC,"Dominique Vien",49.1,20.6
+24011,"Beloeil--Chambly",BQ,"Yves-Fran\u00e7ois Blanchet",48.3,14.3
+24012,"Berthier--Maskinong\u00e9",BQ,"Yves Perron",35.0,10.7
+24013,"Bourassa",LPC,"Abdelhaq Sari",58.6,41.4
+24014,"Brome--Missisquoi",LPC,"Louis Villeneuve",48.3,20.2
+24015,"Brossard--Saint-Lambert",LPC,"Alexandra Mend\u00e8s",62.2,43.4
+24016,"Charlesbourg--Haute-Saint-Charles",CPC,"Pierre Paul-Hus",42.4,7.8
+24017,"Ch\u00e2teauguay--Les Jardins-de-Napierville",LPC,"Nathalie Provost",45.2,16.1
+24018,"Chicoutimi--Le Fjord",CPC,"Richard Martel",34.1,2.9
+24019,"Compton--Stanstead",LPC,"Marianne Dandurand",45.6,19.3
+24020,"C\u00f4te-du-Sud-Rivi\u00e8re-du-Loup-Kataskomiq-T\u00e9miscouata",CPC,"Bernard G\u00e9n\u00e9reux",45.8,15.5
+24021,"C\u00f4te-Nord--Kawawachikamach--Nitassinan",BQ,"Maril\u00e8ne Gill",43.7,16.3
+24022,"Dorval--Lachine--LaSalle",LPC,"Anju Dhillon",59.4,38.7
+24023,"Drummond",BQ,"Martin Champoux",42.8,14.4
+24024,"Gasp\u00e9sie--Les \u00celes-de-la-Madeleine--Listuguj",BQ,"Alexis Desch\u00eanes",45.8,7.5
+24025,"Gatineau",LPC,"Steven MacKinnon",60.5,41.4
+24026,"Hochelaga--Rosemont-Est",LPC,"Marie-Gabrielle M\u00e9nard",46.1,19.0
+24027,"Honor\u00e9-Mercier",LPC,"Eric St-Pierre",60.2,38.7
+24028,"Hull--Aylmer",LPC,"Greg Fergus",62.1,45.2
+24029,"Joliette--Manawan",BQ,"Gabriel Ste-Marie",49.3,18.0
+24030,"Jonqui\u00e8re",BQ,"Mario Simard",40.0,9.7
+24031,"La Pointe-de-l'\u00cele",BQ,"Mario Beaulieu",43.1,5.4
+24032,"La Prairie--Atateken",LPC,"Jacques Ramsay",44.1,9.3
+24033,"Lac-Saint-Jean",BQ,"Alexis Brunelle-Duceppe",46.2,20.0
+24034,"Lac-Saint-Louis",LPC,"Francis Scarpaleggia",67.6,44.0
+24035,"LaSalle--\u00c9mard--Verdun",LPC,"Claude Guay",50.9,29.6
+24036,"Laurentides--Labelle",BQ,"Marie-H\u00e9l\u00e8ne Gaudreau",44.6,9.6
+24037,"Laurier--Sainte-Marie",LPC,"Steven Guilbeault",52.1,33.3
+24038,"Laval--Les \u00celes",LPC,"Fay\u00e7al El-Khoury",49.7,17.5
+24039,"Les Pays-d'en-Haut",LPC,"Tim Watchorn",41.0,4.9
+24040,"L\u00e9vis--Lotbini\u00e8re",CPC,"Jacques Gourde",47.7,18.3
+24041,"Longueuil--Charles-LeMoyne",LPC,"Sherry Romanado",49.4,22.7
+24042,"Longueuil--Saint-Hubert",LPC,"Natilien Joseph",41.0,1.3
+24043,"Louis-H\u00e9bert",LPC,"Jo\u00ebl Lightbound",55.4,34.1
+24044,"Louis-Saint-Laurent--Akiawenhrahk",CPC,"G\u00e9rard Deltell",44.9,11.9
+24045,"Marc-Aur\u00e8le-Fortin",LPC,"Carlos Leit\u00e3o",52.0,28.4
+24046,"M\u00e9gantic--L'\u00c9rable--Lotbini\u00e8re",CPC,"Luc Berthold",58.8,37.3
+24047,"Mirabel",BQ,"Jean-Denis Garon",39.9,6.6
+24048,"Mount Royal",LPC,"Anthony Housefather",51.1,10.6
+24049,"Mont-Saint-Bruno--L'Acadie",LPC,"Bienvenu-Olivier Ntumba",47.1,12.0
+24050,"Montcalm",BQ,"Luc Th\u00e9riault",46.6,19.7
+24051,"Montmorency--Charlevoix",CPC,"Gabriel Hardy",34.5,0.9
+24052,"Notre-Dame-de-Gr\u00e2ce--Westmount",LPC,"Anna Gainey",64.0,44.3
+24053,"Outremont",LPC,"Rachel Bendayan",55.2,42.7
+24054,"Papineau",LPC,"Marjorie Michel",53.0,36.4
+24055,"Pierre-Boucher--Les Patriotes--Verch\u00e8res",BQ,"Xavier Barsalou-Duval",46.1,7.3
+24056,"Pierrefonds--Dollard",LPC,"Sameer Zuberi",60.1,29.5
+24057,"Pontiac--Kitigan Zibi",LPC,"Sophie Chatel",54.6,27.0
+24058,"Portneuf--Jacques-Cartier",CPC,"Jo\u00ebl Godin",49.6,20.5
+24059,"Qu\u00e9bec Centre",LPC,"Jean-Yves Duclos",49.5,13.6
+24060,"Repentigny",BQ,"Patrick Bonin",42.2,3.4
+24061,"Richmond--Arthabaska",CPC,"\u00c9ric Lefebvre",35.5,2.5
+24062,"Rimouski--La Matap\u00e9dia",BQ,"Maxime Blanchette-Joncas",46.2,10.6
+24063,"Rivi\u00e8re-des-Mille-\u00celes",LPC,"Linda Lapointe",45.6,12.8
+24064,"Rivi\u00e8re-du-Nord",BQ,"Rh\u00e9al Fortin",43.8,12.2
+24065,"Rosemont--La Petite-Patrie",NDP,"Alexandre Boulerice",41.0,9.4
+24066,"Saint-Hyacinthe--Bagot--Acton",BQ,"Simon-Pierre Savard-Tremblay",43.9,10.2
+24067,"Saint-Jean",BQ,"Christine Normandin",44.3,10.1
+24068,"Saint-Laurent",LPC,"Emmanuella Lambropoulos",58.9,30.7
+24069,"Saint-L\u00e9onard--Saint-Michel",LPC,"Patricia Lattanzio",65.3,44.7
+24070,"Saint-Maurice--Champlain",LPC,"Fran\u00e7ois-Philippe Champagne",50.0,25.3
+24071,"Shefford",BQ,"Andr\u00e9anne Larouche",40.1,0.9
+24072,"Sherbrooke",LPC,"\u00c9lisabeth Bri\u00e8re",51.3,24.7
+24073,"Terrebonne",LPC,"Tatiana Auguste",38.7,0.0
+24074,"Th\u00e9r\u00e8se-De Blainville",LPC,"Madeleine Chenette",45.8,13.5
+24075,"Trois-Rivi\u00e8res",LPC,"Caroline Desrochers",41.0,13.4
+24076,"Vaudreuil",LPC,"Peter Schiefke",57.9,35.0
+24077,"Ville-Marie--Le Sud-Ouest--\u00cele-des-Soeurs",LPC,"Marc Miller",63.7,44.9
+24078,"Vimy",LPC,"Annie Koutrakis",53.4,28.7
+35001,"Ajax",LPC,"Jennifer McKelvie",56.3,17.2
+35002,"Algonquin--Renfrew--Pembroke",CPC,"Cheryl Gallant",55.7,17.9
+35003,"Aurora--Oak Ridges--Richmond Hill",CPC,"Costas Menegakis",54.7,12.0
+35004,"Barrie South--Innisfil",CPC,"John Brassard",57.8,19.9
+35005,"Barrie--Springwater--Oro-Medonte",CPC,"Doug Shipley",51.7,7.3
+35006,"Bay of Quinte",LPC,"Chris Malette",50.4,5.7
+35007,"Beaches--East York",LPC,"Nate Erskine-Smith",67.7,44.2
+35008,"Bowmanville--Oshawa North",CPC,"Jamil Jivani",49.8,4.3
+35009,"Brampton Centre",LPC,"Amandeep Sodhi",48.4,1.5
+35010,"Brampton--Chinguacousy Park",LPC,"Shafqat Ali",48.8,4.4
+35011,"Brampton East",LPC,"Maninder Sidhu",48.6,3.9
+35012,"Brampton North--Caledon",LPC,"Ruby Sahota",49.0,1.6
+35013,"Brampton South",LPC,"Sonia Sidhu",49.3,1.8
+35014,"Brampton West",CPC,"Amarjeet Gill",49.8,2.2
+35015,"Brantford--Brant South--Six Nations",CPC,"Larry Brock",52.4,11.4
+35016,"Bruce--Grey--Owen Sound",CPC,"Alex Ruff",53.0,12.9
+35017,"Burlington",LPC,"Karina Gould",55.8,15.2
+35018,"Burlington North--Milton West",LPC,"Adam Van Koeverden",52.7,8.5
+35019,"Cambridge",CPC,"Connie Cody",48.6,2.2
+35020,"Carleton",LPC,"Bruce Fanjoy",50.9,5.2
+35021,"Chatham-Kent--Leamington",CPC,"Dave Epp",57.5,21.6
+35022,"Davenport",LPC,"Julie Dzerowicz",57.8,34.6
+35023,"Don Valley North",LPC,"Maggie Chi",53.2,10.9
+35024,"Don Valley West",LPC,"Rob Oliphant",62.6,29.4
+35025,"Dufferin--Caledon",CPC,"Kyle Seeback",60.1,25.0
+35026,"Eglinton--Lawrence",LPC,"Vince Gasparro",49.3,1.5
+35027,"Elgin--St. Thomas--London South",CPC,"Andrew Lawton",50.1,7.0
+35028,"Essex",CPC,"Chris Lewis",57.5,20.9
+35029,"Etobicoke Centre",LPC,"Yvan Baker",53.6,9.6
+35030,"Etobicoke--Lakeshore",LPC,"James Maloney",57.4,18.6
+35031,"Etobicoke North",LPC,"John Zerucelli",52.6,11.6
+35032,"Flamborough--Glanbrook--Brant North",CPC,"Dan Muys",52.7,9.5
+35033,"Guelph",LPC,"Dominique O'Rourke",54.7,23.9
+35034,"Haldimand--Norfolk",CPC,"Leslyn Lewis",57.6,21.2
+35035,"Haliburton--Kawartha Lakes",CPC,"Jamie Schmale",56.6,17.9
+35036,"Hamilton Centre",LPC,"Aslam Rana",37.6,7.6
+35037,"Hamilton East--Stoney Creek",CPC,"Ned Kuruc",48.7,2.2
+35038,"Hamilton Mountain",LPC,"Lisa Hepfner",45.6,4.1
+35039,"Hamilton West--Ancaster--Dundas",LPC,"John-Paul Danko",56.1,19.3
+35040,"Hastings--Lennox and Addington--Tyendinaga",CPC,"Shelby Kramp-Neuman",54.3,14.0
+35041,"Humber River--Black Creek",LPC,"Judy Sgro",55.6,19.8
+35042,"Huron--Bruce",CPC,"Ben Lobb",53.2,11.6
+35043,"Kanata",LPC,"Jenna Sudds",60.8,25.1
+35044,"Kapuskasing--Timmins--Mushkegowuk",CPC,"Ga\u00e9tan Malette",48.9,10.0
+35045,"Kenora--Kiiwetinoong",CPC,"Eric Melillo",48.7,13.6
+35046,"Kingston and the Islands",LPC,"Mark Gerretsen",63.2,32.6
+35047,"King--Vaughan",CPC,"Anna Roberts",61.5,25.6
+35048,"Kitchener Centre",CPC,"Kelly DeRidder",34.2,0.6
+35049,"Kitchener--Conestoga",LPC,"Tim Louis",48.3,0.8
+35050,"Kitchener South--Hespeler",CPC,"Matt Strauss",47.9,1.7
+35051,"Lanark--Frontenac",CPC,"Scott Reid",50.4,4.8
+35052,"Leeds--Grenville--Thousand Islands--Rideau Lakes",CPC,"Michael Barrett",50.0,5.7
+35053,"London Centre",LPC,"Peter Fragiskatos",56.7,25.6
+35054,"London--Fanshawe",CPC,"Kurt Holman",40.6,10.1
+35055,"London West",LPC,"Arielle Kayabaga",56.2,19.2
+35056,"Markham--Stouffville",LPC,"Helena Jaczek",51.4,6.1
+35057,"Markham--Thornhill",LPC,"Tim Hodgson",54.5,12.9
+35058,"Markham--Unionville",CPC,"Michael Ma",50.7,3.6
+35059,"Middlesex--London",CPC,"Lianne Rood",51.7,9.6
+35060,"Milton East--Halton Hills South",LPC,"Kristina Tesser Derksen",48.3,0.0
+35061,"Mississauga Centre",LPC,"Fares Al Soud",53.9,12.0
+35062,"Mississauga East--Cooksville",LPC,"Peter Fonseca",50.2,5.6
+35063,"Mississauga--Erin Mills",LPC,"Iqra Khalid",55.7,15.7
+35064,"Mississauga--Lakeshore",LPC,"Charles Sousa",52.4,8.3
+35065,"Mississauga--Malton",LPC,"Iqwinder Singh Gaheer",53.3,11.1
+35066,"Mississauga--Streetsville",LPC,"Rechie Valdez",51.5,6.7
+35067,"Nepean",LPC,"Mark Carney",63.8,30.5
+35068,"Newmarket--Aurora",CPC,"Sandra Cobena",50.6,3.6
+35069,"New Tecumseth--Gwillimbury",CPC,"Scot Davidson",59.4,22.4
+35070,"Niagara Falls--Niagara-on-the-Lake",CPC,"Tony Baldinelli",49.1,4.2
+35071,"Niagara South",CPC,"Fred Davies",47.8,3.9
+35072,"Niagara West",CPC,"Dean Allison",51.7,8.5
+35073,"Nipissing--Timiskaming",LPC,"Pauline Rochefort",47.2,2.7
+35074,"Northumberland--Clarke",CPC,"Philip Lawrence",49.0,3.1
+35075,"Oakville East",LPC,"Anita Anand",51.1,6.3
+35076,"Oakville West",LPC,"Sima Acan",53.1,8.7
+35077,"Orl\u00e9ans",LPC,"Marie-France Lalonde",67.4,39.4
+35078,"Oshawa",CPC,"Rhonda Kirkland",48.2,5.2
+35079,"Ottawa Centre",LPC,"Yasir Naqvi",62.7,43.1
+35080,"Ottawa South",LPC,"David McGuinty",65.2,38.1
+35081,"Ottawa--Vanier--Gloucester",LPC,"Mona Fortier",67.4,45.9
+35082,"Ottawa West--Nepean",LPC,"Anita Vandenbeld",63.6,36.6
+35083,"Oxford",CPC,"Arpan Khanna",53.4,15.2
+35084,"Parry Sound--Muskoka",CPC,"Scott Aitchison",52.2,9.6
+35085,"Perth--Wellington",CPC,"John Nater",53.0,12.2
+35086,"Peterborough",LPC,"Emma Harrison",54.3,13.2
+35087,"Pickering--Brooklin",LPC,"Juanita Nathan",54.2,13.0
+35088,"Prescott--Russell--Cumberland",LPC,"Giovanna Mingarelli",54.8,14.4
+35089,"Richmond Hill South",CPC,"Vincent Ho",52.3,7.9
+35090,"Sarnia--Lambton--Bkejwanong",CPC,"Marilyn Gladu",53.1,15.3
+35091,"Sault Ste. Marie--Algoma",LPC,"Terry Sheehan",47.4,2.6
+35092,"Scarborough--Agincourt",LPC,"Jean Yip",54.3,11.5
+35093,"Scarborough Centre--Don Valley East",LPC,"Salma Zahid",57.3,19.2
+35094,"Scarborough--Guildwood--Rouge Park",LPC,"Gary Anandasangaree",64.0,32.3
+35095,"Scarborough North",LPC,"Shaun Chen",63.0,29.8
+35096,"Scarborough Southwest",LPC,"Bill Blair",61.5,30.9
+35097,"Scarborough--Woburn",LPC,"Michael Coteau",60.4,26.2
+35098,"Simcoe--Grey",CPC,"Terry Dowdall",52.1,8.7
+35099,"Simcoe North",CPC,"Adam Chambers",48.4,3.7
+35100,"Spadina--Harbourfront",LPC,"Chi Nguyen",60.1,29.3
+35101,"St. Catharines",LPC,"Chris Bittle",52.0,11.6
+35102,"Stormont--Dundas--Glengarry",CPC,"Eric Duncan",56.3,16.6
+35103,"Sudbury",LPC,"Viviane Lapointe",51.9,12.7
+35104,"Sudbury East--Manitoulin--Nickel Belt",CPC,"Jim Belanger",48.3,6.8
+35105,"Taiaiako'n--Parkdale--High Park",LPC,"Karim Bardeesy",55.8,32.8
+35106,"Thornhill",CPC,"Melissa Lantsman",66.4,35.2
+35107,"Thunder Bay--Rainy River",LPC,"Marcus Powlowski",48.5,5.6
+35108,"Thunder Bay--Superior North",LPC,"Patty Hajdu",55.2,19.5
+35109,"Toronto Centre",LPC,"Evan Solomon",64.3,43.4
+35110,"Toronto--Danforth",LPC,"Julie Dabrusin",66.6,47.6
+35111,"Toronto--St. Paul's",LPC,"Leslie Church",61.9,28.8
+35112,"University--Rosedale",LPC,"Chrystia Freeland",64.0,40.5
+35113,"Vaughan--Woodbridge",CPC,"Michael Guglielmin",60.0,22.0
+35114,"Waterloo",LPC,"Bardish Chagger",59.5,26.9
+35115,"Wellington--Halton Hills North",CPC,"Michael Chong",50.6,6.2
+35116,"Whitby",LPC,"Ryan Turnbull",52.7,8.9
+35117,"Willowdale",LPC,"Ali Ehsassi",53.4,9.5
+35118,"Windsor--Tecumseh--Lakeshore",CPC,"Kathy Borrelli",45.8,0.0
+35119,"Windsor West",CPC,"Harb Gill",39.0,8.1
+35120,"York Centre",CPC,"Roman Baber",54.8,12.2
+35121,"York--Durham",CPC,"Jacob Mantle",55.6,16.0
+35122,"York South--Weston--Etobicoke",LPC,"Ahmed Hussen",55.3,15.5
+46001,"Brandon--Souris",CPC,"Grant Jackson",62.2,38.8
+46002,"Churchill--Keewatinook Aski",LPC,"Rebecca Chartrand",45.5,16.8
+46003,"Elmwood--Transcona",CPC,"Colin Reynolds",41.6,7.1
+46004,"Kildonan--St. Paul",CPC,"Raquel Dancho",47.5,2.8
+46005,"Portage--Lisgar",CPC,"Branden Leslie",69.4,46.5
+46006,"Provencher",CPC,"Ted Falk",66.3,40.5
+46007,"Riding Mountain",CPC,"Dan Mazier",67.8,45.7
+46008,"St. Boniface--St. Vital",LPC,"Ginette Lavack",59.8,27.5
+46009,"Selkirk--Interlake--Eastman",CPC,"James Bezan",60.2,29.8
+46010,"Winnipeg Centre",NDP,"Leah Gazan",39.4,4.0
+46011,"Winnipeg North",LPC,"Kevin Lamoureux",57.9,23.6
+46012,"Winnipeg South",LPC,"Terry Duguid",59.0,23.9
+46013,"Winnipeg South Centre",LPC,"Ben Carr",63.6,35.9
+46014,"Winnipeg West",LPC,"Doug Eyolfson",54.5,13.7
+47001,"Battlefords--Lloydminster--Meadow Lake",CPC,"Rosemarie Falk",75.8,57.1
+47002,"Carlton Trail--Eagle Creek",CPC,"Kelly Block",77.4,60.4
+47003,"Desneth\u00e9--Missinippi--Churchill River",LPC,"Buckley Belanger",65.1,39.6
+47004,"Moose Jaw--Lake Centre--Lanigan",CPC,"Fraser Tolmie",71.9,55.2
+47005,"Prince Albert",CPC,"Randy Hoback",71.5,52.3
+47006,"Regina--Lewvan",CPC,"Warren Steinley",50.0,7.0
+47007,"Regina--Qu'Appelle",CPC,"Andrew Scheer",64.0,37.0
+47008,"Regina--Wascana",CPC,"Michael Kram",50.1,6.4
+47009,"Saskatoon South",CPC,"Kevin Waugh",49.3,8.9
+47010,"Saskatoon--University",CPC,"Corey Tochor",48.9,7.5
+47011,"Saskatoon West",CPC,"Brad Redekopp",52.7,25.4
+47012,"Souris--Moose Mountain",CPC,"Steven Bonk",84.0,74.2
+47013,"Swift Current--Grasslands--Kindersley",CPC,"Jeremy Patzer",82.0,70.8
+47014,"Yorkton--Melville",CPC,"Cathay Wagantall",77.5,63.1
+48001,"Airdrie--Cochrane",CPC,"Blake Richards",71.2,47.5
+48002,"Battle River--Crowfoot",CPC,"Damien Kurek",82.8,71.2
+48003,"Bow River",CPC,"David Bexte",78.9,62.0
+48004,"Calgary Centre",CPC,"Greg McLean",50.2,4.4
+48005,"Calgary Confederation",LPC,"Corey Hogan",48.1,1.8
+48006,"Calgary Crowfoot",CPC,"Pat Kelly",58.8,21.5
+48007,"Calgary East",CPC,"Jasraj Hallan",60.5,28.7
+48008,"Calgary Heritage",CPC,"Shuv Majumdar",61.4,26.9
+48009,"Calgary McKnight",CPC,"Dalwinder Gill",49.1,3.1
+48010,"Calgary Midnapore",CPC,"Stephanie Kusie",65.5,35.6
+48011,"Calgary Nose Hill",CPC,"Michelle Rempel Garner",59.4,23.3
+48012,"Calgary Shepard",CPC,"Tom Kmiec",68.0,39.8
+48013,"Calgary Signal Hill",CPC,"David GL McKenzie",60.1,23.8
+48014,"Calgary Skyview",CPC,"Amanpreet S. Gill",55.4,17.9
+48015,"Edmonton Centre",LPC,"Eleanor Olszewski",44.3,6.5
+48016,"Edmonton Gateway",CPC,"Tim Uppal",50.6,13.3
+48017,"Edmonton Griesbach",CPC,"Kerry Diotte",45.5,11.3
+48018,"Edmonton Manning",CPC,"Ziad Aboultaif",53.1,17.8
+48019,"Edmonton Northwest",CPC,"Billy Morin",53.4,15.2
+48020,"Edmonton Riverbend",CPC,"Matt Jeneroux",50.2,5.4
+48021,"Edmonton Southeast",CPC,"Jagsharan Singh Mahal",52.9,14.1
+48022,"Edmonton Strathcona",NDP,"Heather McPherson",47.0,13.8
+48023,"Edmonton West",CPC,"Kelly McCauley",52.9,12.2
+48024,"Foothills",CPC,"John Barlow",76.3,57.3
+48025,"Fort McMurray--Cold Lake",CPC,"Laila Goodridge",80.2,65.6
+48026,"Grande Prairie",CPC,"Chris Warkentin",81.7,69.8
+48027,"Lakeland",CPC,"Shannon Stubbs",81.0,68.8
+48028,"Leduc--Wetaskiwin",CPC,"Mike Lake",74.7,57.4
+48029,"Lethbridge",CPC,"Rachael Thomas",61.1,28.3
+48030,"Medicine Hat--Cardston--Warner",CPC,"Glen Motz",76.7,59.1
+48031,"Parkland",CPC,"Dane Lloyd",75.2,57.3
+48032,"Peace River--Westlock",CPC,"Arnold Viersen",77.1,65.3
+48033,"Ponoka--Didsbury",CPC,"Blaine Calkins",81.8,71.0
+48034,"Red Deer",CPC,"Burton Bailey",71.6,49.6
+48035,"Sherwood Park--Fort Saskatchewan",CPC,"Garnett Genuis",66.3,39.1
+48036,"St. Albert--Sturgeon River",CPC,"Michael Cooper",63.9,34.1
+48037,"Yellowhead",CPC,"William Stevenson",69.1,43.9
+59001,"Abbotsford--South Langley",CPC,"Sukhman Gill",43.1,9.2
+59002,"Burnaby Central",LPC,"Wade Chang",42.2,3.6
+59003,"Burnaby North--Seymour",LPC,"Terry Beech",59.1,25.1
+59004,"Cariboo--Prince George",CPC,"Todd Doherty",60.3,29.9
+59005,"Chilliwack--Hope",CPC,"Mark Strahl",54.8,19.4
+59006,"Cloverdale--Langley City",CPC,"Tamara Jansen",47.8,1.5
+59007,"Columbia--Kootenay--Southern Rockies",CPC,"Rob Morrison",50.4,22.2
+59008,"Coquitlam--Port Coquitlam",LPC,"Ron McKinnon",47.4,4.4
+59009,"Courtenay--Alberni",NDP,"Gord Johns",39.6,4.5
+59010,"Cowichan--Malahat--Langford",CPC,"Jeff Kibble",37.2,4.7
+59011,"Delta",LPC,"Jill McKnight",51.8,8.7
+59012,"Esquimalt--Saanich--Sooke",LPC,"Stephanie McLean",49.3,20.6
+59013,"Fleetwood--Port Kells",LPC,"Gurbux Saini",47.9,3.7
+59014,"Kamloops--Shuswap--Central Rockies",CPC,"Mel Arnold",52.2,13.3
+59015,"Kamloops--Thompson--Nicola",CPC,"Frank Caputo",51.5,11.3
+59016,"Kelowna",LPC,"Stephen Fuhr",48.8,1.8
+59017,"Langley Township--Fraser Heights",CPC,"Tako Van Popta",51.4,8.5
+59018,"Mission--Matsqui--Abbotsford",CPC,"Brad Vis",56.7,20.1
+59019,"Nanaimo--Ladysmith",CPC,"Tamara Kronis",35.5,7.7
+59020,"New Westminster--Burnaby--Maillardville",LPC,"Jake Sawatzky",35.1,3.5
+59021,"North Island--Powell River",CPC,"Aaron Gunn",38.7,6.2
+59022,"North Vancouver--Capilano",LPC,"Jonathan Wilkinson",59.8,26.1
+59023,"Okanagan Lake West--South Kelowna",CPC,"Dan Albas",50.9,6.7
+59024,"Pitt Meadows--Maple Ridge",CPC,"Marc Dalton",47.4,1.8
+59025,"Port Moody--Coquitlam",LPC,"Zoe Royer",43.5,3.1
+59026,"Prince George--Peace River--Northern Rockies",CPC,"Bob Zimmer",71.1,51.6
+59027,"Richmond Centre--Marpole",CPC,"Chak Au",49.6,4.8
+59028,"Richmond East--Steveston",LPC,"Parm Bains",48.4,2.1
+59029,"Saanich--Gulf Islands",GPC,"Elizabeth May",39.1,7.3
+59030,"Similkameen--South Okanagan--West Kootenay",CPC,"Helena Konanz",44.1,6.8
+59031,"Skeena--Bulkley Valley",CPC,"Ellis Ross",47.2,7.8
+59032,"South Surrey--White Rock",LPC,"Ernie Klassen",50.5,4.8
+59033,"Surrey Centre",LPC,"Randeep Sarai",48.0,4.8
+59034,"Surrey Newton",LPC,"Sukh Dhaliwal",49.5,5.5
+59035,"Vancouver Centre",LPC,"Hedy Fry",55.2,24.9
+59036,"Vancouver East",NDP,"Jenny Kwan",43.6,8.2
+59037,"Vancouver Fraserview--South Burnaby",LPC,"Gregor Robertson",52.3,16.6
+59038,"Vancouver Granville",LPC,"Taleeb Noormohamed",62.1,33.4
+59039,"Vancouver Kingsway",NDP,"Don Davies",37.2,0.6
+59040,"Vancouver Quadra",LPC,"Wade Grant",63.2,32.8
+59041,"Vernon--Lake Country--Monashee",CPC,"Scott Anderson",50.4,7.6
+59042,"Victoria",LPC,"Will Greaves",54.3,29.4
+59043,"West Vancouver--Sunshine Coast--Sea to Sky Country",LPC,"Patrick Weiler",59.7,26.8
+60001,"Yukon",LPC,"Brendan Hanley",53.1,14.5
+61001,"Northwest Territories",LPC,"Rebecca Alty",53.5,20.2
+62001,"Nunavut",NDP,"Lori Idlout",37.3,0.5

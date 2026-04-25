@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canada Election Results Map</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* Dark mode default */
+:root{
+  --bg:#141416;--surface:#1e1f23;--border:#2e3038;--text:#e8e6e0;--muted:#9b9890;--faint:#5a5856;
+  --tile-bg:#242529;--tile-border:#363840;--tile-hover:#2c2e34;--accent:#4B9EE8;
+  --lpc:#C8102E;--cpc:#1A5DAD;--ndp:#F37021;--bq:#00B2A9;--gpc:#3D9B35;--ppc:#6A1F7A;--ind:#888780;--tbd:#444444;
+  --map-bg:#0e0f11;--info-bar-bg:#1a1b1f;
+}
+/* Light mode */
+:root.light{
+  --bg:#f0ede6;--surface:#fff;--border:#d0cdc6;--text:#1a1917;--muted:#6b6860;--faint:#a0a09a;
+  --tile-bg:#e4e0d8;--tile-border:#bab7ae;--tile-hover:#d8d4cc;--accent:#185FA5;
+  --map-bg:#e8e5de;--info-bar-bg:#fff;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:14px;flex-shrink:0;z-index:50;flex-wrap:wrap}
+.hd-title{font-size:15px;font-weight:700}.hd-sub{font-size:10px;color:var(--muted)}
+.seat-bar-outer{flex:1;max-width:440px;min-width:200px}
+.seat-counts{display:flex;gap:10px;margin-bottom:3px}
+.sc-item{font-size:11px;font-weight:700}
+.sc-item.lpc{color:var(--lpc)}.sc-item.cpc{color:var(--cpc)}.sc-item.ndp{color:var(--ndp)}.sc-item.bq{color:var(--bq)}.sc-item.gpc{color:var(--gpc)}
+.seat-bar{height:7px;border-radius:4px;overflow:hidden;display:flex;background:var(--border);position:relative}
+.sb-seg{height:100%;transition:width .4s}
+.majority-marker{position:absolute;left:50%;top:-1px;bottom:-1px;width:1.5px;background:#555;border-radius:1px}
+.back-btn{display:none;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--accent);background:none;border:1px solid var(--accent);border-radius:6px;padding:4px 10px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.back-btn:hover{background:var(--tile-hover)}.back-btn.vis{display:flex}
+.region-badge{font-size:13px;font-weight:700;display:none;color:var(--text)}.region-badge.vis{display:block}
+.legend{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-left:auto}
+.dm-toggle{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--muted);cursor:pointer;flex-shrink:0}
+.dm-toggle:hover{background:var(--tile-hover);color:var(--text)}
+.leg-item{display:flex;align-items:center;gap:3px;font-size:10px;color:var(--muted)}
+.leg-sw{width:9px;height:9px;border-radius:2px}
+#map-view{flex:1;overflow:hidden;position:relative}
+#overview{position:absolute;inset:0;padding:10px;overflow:auto}
+.geo-grid{position:relative;width:100%;height:100%;min-height:380px}
+.region-tile{width:100%;height:100%;background:var(--tile-bg);border:1.5px solid var(--tile-border);border-radius:6px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:border-color .1s,transform .12s}
+.region-tile:hover{border-color:var(--accent);transform:scale(1.05);z-index:10;position:relative;background:var(--tile-hover)}
+.region-tile svg{flex:1;display:block;width:100%;height:100%}
+.tile-label{font-size:7.5px;font-weight:600;text-align:center;padding:1px 2px 3px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;line-height:1.2;flex-shrink:0}
+#detail-view{position:absolute;inset:0;display:none;flex-direction:column}
+#detail-view.vis{display:flex}
+#info-bar{flex-shrink:0;background:var(--info-bar-bg);border-bottom:1px solid var(--border);padding:6px 16px;display:flex;align-items:stretch;gap:0;height:60px;overflow:hidden}
+.ib-riding{flex-shrink:0;min-width:180px;max-width:240px;display:flex;flex-direction:column;justify-content:center;padding-right:14px;border-right:1px solid var(--border)}
+.ib-name{font-size:13px;font-weight:700;line-height:1.3}
+.ib-fr{font-size:10px;color:var(--muted);margin-top:1px}
+.ib-hint{font-size:11px;color:var(--faint);font-style:italic}
+#poll-breakdown{flex:1;padding:0 0 0 14px;overflow:hidden;display:none;align-items:center}
+.ib-divider{width:1px;height:32px;background:var(--border);flex-shrink:0}
+.ib-stat{text-align:center;flex-shrink:0}
+.ib-sl{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);font-weight:600}
+.ib-sv{font-size:15px;font-weight:700;line-height:1.2}
+.ib-sv.pos{color:#2a7d2a}.ib-sv.neg{color:#c0392b}
+.ib-party{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.ib-pdot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ib-pname{font-size:13px;font-weight:700}
+.ib-cand{font-size:11px;color:var(--muted)}
+#detail-map-area{flex:1;position:relative;overflow:hidden;background:var(--map-bg);display:flex;align-items:center;justify-content:center;padding:12px;user-select:none}
+.pdot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px;vertical-align:middle}
+</style>
+</head>
+<body>
+<header>
+  <div><div class="hd-title">Canada Election Results</div><div class="hd-sub">343 ridings · 28 regions</div></div>
+  <div class="seat-bar-outer">
+    <div class="seat-counts">
+      <span class="sc-item lpc" id="sc-lpc">LPC —</span>
+      <span class="sc-item cpc" id="sc-cpc">CPC —</span>
+      <span class="sc-item ndp" id="sc-ndp">NDP —</span>
+      <span class="sc-item bq"  id="sc-bq">BQ —</span>
+      <span class="sc-item gpc" id="sc-gpc">GPC —</span>
+    </div>
+    <div class="seat-bar">
+      <div class="sb-seg" id="sb-lpc" style="background:var(--lpc);width:0%"></div>
+      <div class="sb-seg" id="sb-cpc" style="background:var(--cpc);width:0%"></div>
+      <div class="sb-seg" id="sb-ndp" style="background:var(--ndp);width:0%"></div>
+      <div class="sb-seg" id="sb-bq"  style="background:var(--bq);width:0%"></div>
+      <div class="sb-seg" id="sb-gpc" style="background:var(--gpc);width:0%"></div>
+      <div class="sb-seg" id="sb-oth" style="background:var(--ind);width:0%"></div>
+      <div class="majority-marker"></div>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="leg-item"><div class="leg-sw" style="background:var(--lpc)"></div>Liberal</div>
+    <div class="leg-item"><div class="leg-sw" style="background:var(--cpc)"></div>Conservative</div>
+    <div class="leg-item"><div class="leg-sw" style="background:var(--ndp)"></div>NDP</div>
+    <div class="leg-item"><div class="leg-sw" style="background:var(--bq)"></div>Bloc</div>
+    <div class="leg-item"><div class="leg-sw" style="background:var(--gpc)"></div>Green</div>
+  </div>
+  <div class="region-badge" id="region-badge"></div>
+  <button class="dm-toggle" id="dm-toggle" onclick="toggleDark()" title="Toggle dark/light mode">☀ Light</button>
+  <button class="back-btn" id="back-btn" onclick="showOverview()">← All Regions</button>
+  <button class="back-btn" id="back-polls-btn" onclick="backToRiding()" style="display:none">← Back to Riding</button>
+</header>
+
+<div id="map-view">
+  <div id="overview"><div class="geo-grid" id="geo-grid"></div></div>
+  <div id="detail-view">
+    <div id="info-bar">
+      <div class="ib-riding">
+        <div class="ib-name" id="ib-name"><span class="ib-hint">Click a region to begin</span></div>
+        <div class="ib-fr"   id="ib-fr"></div>
+      </div>
+      <div id="poll-breakdown" style="display:none"></div>
+      <!-- Legacy stat elements kept for compatibility but hidden -->
+      <div id="ib-div" style="display:none"></div>
+      <div id="ib-party" style="display:none"><div id="ib-pdot"></div><div><div id="ib-pname"></div><div id="ib-cand"></div></div></div>
+      <div id="ib-div2" style="display:none"></div>
+      <div id="ib-stat-pct" style="display:none"><div id="ib-pct"></div></div>
+      <div id="ib-stat-margin" style="display:none"><div id="ib-margin"></div></div>
+      <div id="ib-stat-swing" style="display:none"><div id="ib-swing"></div></div>
+      <div id="ib-stat-pop" style="display:none"><div id="ib-pop"></div></div>
+    </div>
+    <div id="detail-map-area"><div id="detail-svg-wrap"></div></div>
+  </div>
+</div>
+
+<script src="regions.js"></script>
+<script src="layout.js"></script>
+
+<script>
+// ── Core app logic ────────────────────────────────────────────────────────────
+
+const PC={LPC:'#C8102E',CPC:'#1A5DAD',NDP:'#F37021',BQ:'#00B2A9',GPC:'#3D9B35',PPC:'#6A1F7A',IND:'#888780',TBD:'#c8c5bc'};
+const PL={LPC:'Liberal',CPC:'Conservative',NDP:'NDP',BQ:'Bloc Québécois',GPC:'Green',PPC:'PPC',IND:'Independent',TBD:'—'};
+const pc=p=>PC[p]||PC.TBD;
+const RESULTS = {};
+let RBK={}, activeRegion=null, hovPath=null;
+let zp={scale:1,ox:0,oy:0,dragging:false,startX:0,startY:0,startOx:0,startOy:0};
+
+
+function toggleDark() {
+  const isLight = document.documentElement.classList.toggle('light');
+  document.getElementById('dm-toggle').textContent = isLight ? '🌙 Dark' : '☀ Light';
+  // Re-render overview tiles if visible (colours stay fine since CSS vars update)
+}
+
+function hexToRgb(h){const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return[r,g,b]}
+function blendColor(hex,margin){
+  // margin 0 → 15% of party colour (near white), margin 30+ → 100%
+  const t=Math.min(Math.max(margin/30,0),1);
+  const minAlpha=0.15;
+  const alpha=minAlpha+(1-minAlpha)*t;
+  const [r,g,b]=hexToRgb(hex);
+  const wr=Math.round(r*alpha+255*(1-alpha));
+  const wg=Math.round(g*alpha+255*(1-alpha));
+  const wb=Math.round(b*alpha+255*(1-alpha));
+  return'#'+[wr,wg,wb].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+function rcolor(rd){
+  const r=RESULTS[rd.fedNum];
+  if(!r||!r.party)return PC.TBD;
+  return blendColor(pc(r.party),r.margin);
+}
+
+function mkSVG(region,w){
+  const ns='http://www.w3.org/2000/svg';
+  const h=Math.round(w*region.vbH/region.vbW);
+  const svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox',`0 0 ${region.vbW} ${region.vbH}`);
+  svg.setAttribute('width',w);svg.setAttribute('height',h);
+  region.ridings.forEach(rd=>{
+    const p=document.createElementNS(ns,'path');
+    p.setAttribute('d',rd.d);p.setAttribute('fill',rcolor(rd));
+    p.setAttribute('stroke','#fff');p.setAttribute('stroke-width','0.8');
+    p.setAttribute('stroke-linejoin','round');
+    svg.appendChild(p);
+  });
+  return svg;
+}
+
+function renderOverview(){
+  const grid=document.getElementById('geo-grid');
+  grid.innerHTML='';
+  const gw=grid.clientWidth||grid.offsetWidth||800;
+  const gh=grid.clientHeight||grid.offsetHeight||600;
+  Object.entries(LAYOUT).forEach(([key,L])=>{
+    const region=RBK[key];if(!region)return;
+    const cell=document.createElement('div');
+    cell.style.cssText=`position:absolute;left:${L.x*gw/100}px;top:${L.y*gh/100}px;width:${L.w*gw/100}px;height:${L.h*gh/100}px`;
+    const tile=document.createElement('div');
+    tile.className='region-tile';tile.title=region.name;tile.id='tile-'+key;
+    tile.onclick=()=>showDetail(key);
+    tile.appendChild(mkSVG(region,160));
+    const lbl=document.createElement('div');
+    lbl.className='tile-label';lbl.textContent=region.name;
+    tile.appendChild(lbl);
+    cell.appendChild(tile);grid.appendChild(cell);
+  });
+}
+
+const REGION_FEDS={"Arctic": [62001, 60001, 61001], "Calgary": [48001, 48004, 48005, 48006, 48007, 48008, 48009, 48010, 48011, 48012, 48013, 48014], "Eastern_Ontario": [35074, 35002, 35006, 35086, 35035, 35040, 35102, 35051, 35052, 35046], "Edmonton": [48018, 48019, 48020, 48021, 48022, 48023, 48015, 48016, 48017], "GTHA": [35056, 35057, 35058, 35060, 35063, 35064, 35065, 35066, 35069, 35068, 35061, 35062, 35070, 35071, 35072, 35075, 35076, 35001, 35003, 35004, 35078, 35008, 35010, 35009, 35011, 35087, 35012, 35013, 35014, 35017, 35089, 35018, 35019, 35025, 35032, 35036, 35037, 35039, 35101, 35033, 35038, 35106, 35047, 35049, 35113, 35114, 35115, 35116, 35048, 35121, 35050], "Montreal": [24031, 24034, 24035, 24037, 24038, 24045, 24048, 24052, 24053, 24054, 24056, 24065, 24068, 24069, 24077, 24078, 24003, 24004, 24013, 24022, 24026, 24027], "New_Brunswick": [13001, 13002, 13003, 13004, 13005, 13006, 13007, 13008, 13009, 13010, 24062, 24024], "Newfoundland": [10001, 10002, 10003, 10005, 10006, 10007], "North_Quebec": [24029, 24030, 24033, 24036, 24039, 24057, 24070, 24005, 24018], "Northern_BC": [59026, 59031], "Northern_Quebec": [10004, 24001, 24002, 24021], "Nothern_ON": [35073, 35084, 35091, 35103, 35104, 35107, 35108, 35044, 35045], "Nova_Scotia": [12001, 12002, 12003, 12004, 12005, 12006, 12007, 12008, 12009, 12010, 12011], "Ottawa": [35067, 35077, 35081, 35079, 35080, 35082, 35088, 35020, 35043, 24028, 24025], "Outer_Montreal": [24032, 24041, 24042, 24047, 24049, 24050, 24055, 24060, 24063, 24064, 24067, 24073, 24074, 24076, 24007, 24011, 24015, 24017], "PEI": [11001, 11002, 11003, 11004], "Quebec_City": [24040, 24043, 24044, 24046, 24051, 24058, 24059, 24006, 24008, 24010, 24016, 24020], "Rest_of_AB": [48024, 48025, 48026, 48028, 48029, 48030, 48031, 48032, 48033, 48034, 48035, 48036, 48037, 48027, 48002, 48003], "Rest_of_MB": [46009, 46001, 46002, 46005, 46006, 46007], "Rest_of_SK": [47001, 47003, 47005, 47012, 47013, 47014], "Saskatoon_Regina": [47002, 47004, 47006, 47007, 47008, 47009, 47010, 47011], "Southeast_QB": [24019, 24061, 24066, 24071, 24072, 24075, 24009, 24012, 24014, 24023], "Southern_BC": [59014, 59015, 59016, 59018, 59021, 59023, 59030, 59041, 59043, 59004, 59005, 59007, 59009], "Southwestern_Ontario": [35059, 35005, 35083, 35085, 35090, 35015, 35016, 35021, 35027, 35028, 35034, 35098, 35099, 35042, 35054, 35118, 35119, 35053, 35055], "Toronto": [35007, 35094, 35092, 35097, 35022, 35093, 35095, 35023, 35024, 35030, 35029, 35031, 35096, 35100, 35041, 35105, 35110, 35111, 35109, 35112, 35026, 35117, 35120, 35122], "Vancouver": [59002, 59003, 59013, 59006, 59011, 59017, 59020, 59022, 59024, 59025, 59027, 59028, 59032, 59033, 59034, 59035, 59036, 59037, 59038, 59039, 59040, 59001, 59008], "Victoria": [59019, 59029, 59042, 59010, 59012], "Winnipeg": [46008, 46010, 46011, 46012, 46013, 46014, 46003, 46004]};
+
+const REGION_PROVS={"Arctic": ["NT", "NU", "YT"], "Calgary": ["AB"], "Eastern_Ontario": ["ON"], "Edmonton": ["AB"], "GTHA": ["ON"], "Montreal": ["QC"], "New_Brunswick": ["NB", "QC"], "Newfoundland": ["NL"], "North_Quebec": ["QC"], "Northern_BC": ["BC"], "Northern_Quebec": ["NL", "QC"], "Nothern_ON": ["ON"], "Nova_Scotia": ["NS"], "Ottawa": ["ON", "QC"], "Outer_Montreal": ["QC"], "PEI": ["PEI"], "Quebec_City": ["QC"], "Rest_of_AB": ["AB"], "Rest_of_MB": ["MB"], "Rest_of_SK": ["SK"], "Saskatoon_Regina": ["SK"], "Southeast_QB": ["QC"], "Southern_BC": ["BC"], "Southwestern_Ontario": ["ON"], "Toronto": ["ON"], "Vancouver": ["BC"], "Victoria": ["BC"], "Winnipeg": ["MB"]};
+function showDetail(key){
+  activeRegion=RBK[key];if(!activeRegion)return;
+  document.getElementById('overview').style.display='none';
+  document.getElementById('detail-view').classList.add('vis');
+  document.getElementById('back-btn').classList.add('vis');
+  document.getElementById('region-badge').textContent=activeRegion.name;
+  document.getElementById('region-badge').classList.add('vis');
+  document.getElementById('ib-name').innerHTML='<span class="ib-hint">Loading polls…</span>';
+  document.getElementById('ib-fr').textContent='';
+  ['ib-div','ib-party','ib-div2','ib-stat-pct','ib-stat-margin','ib-stat-swing','ib-stat-pop']
+    .forEach(id=>document.getElementById(id).style.display='none');
+  const bd=document.getElementById('poll-breakdown');
+  if(bd)bd.style.display='none';
+
+  // Load all province poll files needed for this region, then render
+  const provFiles=REGION_PROVS[key]||[];
+  Promise.all(provFiles.map(prov=>loadPollFile(prov))).then(()=>{
+    buildDetailMap();
+  });
+}
+
+function loadPollFile(prov){
+  return new Promise(resolve=>{
+    const file='polls_'+prov+'.js';
+    if(POLLS_LOADING[file]==='done'){resolve();return;}
+    if(POLLS_LOADING[file]==='loading'){
+      const check=setInterval(()=>{if(POLLS_LOADING[file]==='done'){clearInterval(check);resolve();}},50);
+      return;
+    }
+    POLLS_LOADING[file]='loading';
+    const s=document.createElement('script');
+    s.src=file;
+    s.onload=()=>{POLLS_LOADING[file]='done';resolve();};
+    s.onerror=()=>{POLLS_LOADING[file]='done';resolve();};
+    document.head.appendChild(s);
+  });
+}
+
+
+
+function pathBBox(d) {
+  // Parse SVG path M/L commands to get bounding box
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  const re=/([ML])(-?[\d.]+),(-?[\d.]+)/g;
+  let m;
+  while((m=re.exec(d))!==null){
+    const x=parseFloat(m[2]),y=parseFloat(m[3]);
+    if(x<minX)minX=x;if(x>maxX)maxX=x;
+    if(y<minY)minY=y;if(y>maxY)maxY=y;
+  }
+  return {x:minX,y:minY,w:maxX-minX,h:maxY-minY};
+}
+
+function buildDetailMap(){hovPath=null;currentHlPaths={};currentPollHlPaths={};
+  const wrap=document.getElementById('detail-svg-wrap');wrap.innerHTML='';
+  const area=document.getElementById('detail-map-area');
+  const aw=area.clientWidth-24,ah=area.clientHeight-24;
+  const scale=Math.min(aw/activeRegion.vbW,ah/activeRegion.vbH,4);
+  const ns='http://www.w3.org/2000/svg';
+  const W=Math.round(activeRegion.vbW*scale);
+  const H=Math.round(activeRegion.vbH*scale);
+
+  // ── Layer 1: Poll fills ───────────────────────────────────────────────────
+  const svgPolls=document.createElementNS(ns,'svg');
+  svgPolls.setAttribute('viewBox',`0 0 ${activeRegion.vbW} ${activeRegion.vbH}`);
+  svgPolls.setAttribute('width',W);svgPolls.setAttribute('height',H);
+  svgPolls.style.cssText='position:absolute;top:0;left:0;pointer-events:none';
+
+  activeRegion.ridings.forEach(rd=>{
+    const pollData=window.POLLS_DATA&&window.POLLS_DATA[rd.fedNum];
+    if(!pollData||!pollData.polls||!pollData.polls.length)return;
+
+    // Compute riding bbox in region coordinate space
+    const b=pathBBox(rd.d);
+    const PAD=12;
+    // Poll inner area is PADDING..vbW-PADDING, PADDING..vbH-PADDING
+    // Map that to riding bbox in region coords
+    const scaleX=b.w/(pollData.vbW-2*PAD);
+    const scaleY=b.h/(pollData.vbH-2*PAD);
+    const tx=b.x-PAD*scaleX;
+    const ty=b.y-PAD*scaleY;
+
+    const g=document.createElementNS(ns,'g');
+    g.setAttribute('transform',`translate(${tx.toFixed(3)},${ty.toFixed(3)}) scale(${scaleX.toFixed(6)},${scaleY.toFixed(6)})`);
+
+    pollData.polls.forEach(poll=>{
+      const p=document.createElementNS(ns,'path');
+      p.setAttribute('d',poll.d);
+      const fill=poll.winner?blendColor(PC[poll.winner]||'#888780',poll.margin||0):'#333';
+      p.setAttribute('fill',fill);
+      p.setAttribute('stroke',fill);
+      p.setAttribute('stroke-width','0.5');
+      p.setAttribute('stroke-linejoin','round');
+      g.appendChild(p);
+    });
+    svgPolls.appendChild(g);
+  });
+
+  // ── Layer 2: Riding outlines (no fill) ───────────────────────────────────
+  const svgRidings=document.createElementNS(ns,'svg');
+  svgRidings.setAttribute('viewBox',`0 0 ${activeRegion.vbW} ${activeRegion.vbH}`);
+  svgRidings.setAttribute('width',W);svgRidings.setAttribute('height',H);
+  svgRidings.style.cssText='position:absolute;top:0;left:0;pointer-events:none';
+
+  // ── Layer 3: Highlight outlines ──────────────────────────────────────────
+  const svgHL=document.createElementNS(ns,'svg');
+  svgHL.setAttribute('viewBox',`0 0 ${activeRegion.vbW} ${activeRegion.vbH}`);
+  svgHL.setAttribute('width',W);svgHL.setAttribute('height',H);
+  svgHL.style.cssText='position:absolute;top:0;left:0;pointer-events:none';
+
+  // ── Layer 4: Hit areas ───────────────────────────────────────────────────
+  const svgHit=document.createElementNS(ns,'svg');
+  svgHit.setAttribute('viewBox',`0 0 ${activeRegion.vbW} ${activeRegion.vbH}`);
+  svgHit.setAttribute('width',W);svgHit.setAttribute('height',H);
+  svgHit.style.cssText='position:absolute;top:0;left:0;cursor:pointer';
+
+  const hlPaths={};
+
+  activeRegion.ridings.forEach(rd=>{
+    // Riding outline
+    // Gradient fill: party colour, opacity scaled by margin of victory
+    const resR=RESULTS_RICH[rd.fedNum]||RESULTS_RICH[String(rd.fedNum)]||RESULTS[rd.fedNum]||{};
+    const rParty=resR.party||resR.party||'TBD';
+    const rMargin=resR.majPct||resR.margin||0;
+    const rHex=(PC[rParty]||'#c8c5bc').replace('#','');
+    const rr=parseInt(rHex.slice(0,2),16),rg=parseInt(rHex.slice(2,4),16),rb=parseInt(rHex.slice(4,6),16);
+    // Scale opacity: close race = 0.15, landslide (30%+) = 0.50
+    const rOpacity = 0.15 + Math.min(rMargin/30, 1) * 0.35;
+    const pFill=document.createElementNS(ns,'path');
+    pFill.setAttribute('d',rd.d);
+    pFill.setAttribute('fill',`rgba(${rr},${rg},${rb},${rOpacity.toFixed(3)})`);
+    pFill.setAttribute('stroke','none');
+    svgRidings.appendChild(pFill);
+
+    // White border outline on top
+    const pOut=document.createElementNS(ns,'path');
+    pOut.setAttribute('d',rd.d);
+    pOut.setAttribute('fill','none');
+    pOut.setAttribute('stroke','rgba(255,255,255,0.85)');
+    pOut.setAttribute('stroke-width','0.5');
+    pOut.setAttribute('stroke-linejoin','round');
+    pOut.classList.add('riding-outline');
+    svgRidings.appendChild(pOut);
+
+    // Highlight
+    const pHL=document.createElementNS(ns,'path');
+    pHL.setAttribute('d',rd.d);
+    pHL.setAttribute('fill','none');
+    pHL.setAttribute('stroke','#FFD700');
+    pHL.setAttribute('stroke-width','1.5');
+    pHL.setAttribute('stroke-linejoin','round');
+    pHL.classList.add('hl-path');
+    pHL.style.display='none';
+    hlPaths[rd.fedNum]=pHL;
+    svgHL.appendChild(pHL);
+
+    // Hit area
+    const pHit=document.createElementNS(ns,'path');
+    pHit.setAttribute('d',rd.d);
+    pHit.setAttribute('fill','transparent');
+    pHit.setAttribute('stroke','none');
+    pHit.dataset.fn=rd.fedNum;
+    pHit.addEventListener('mouseenter',()=>{
+      if(hovPath&&hovPath!==rd.fedNum)hideHl(hovPath);
+      hovPath=rd.fedNum;showHl(rd.fedNum);
+      showRidingInfoBar(rd);
+    });
+    pHit.addEventListener('mouseleave',()=>{
+      hideHl(rd.fedNum);if(hovPath===rd.fedNum)hovPath=null;
+      clearRidingInfoBar();
+    });
+    svgHit.appendChild(pHit);
+  });
+
+  // Single delegated click on hit layer
+  svgHit.addEventListener('click',e=>{
+    const fn=e.target.dataset&&e.target.dataset.fn;
+    if(fn)selectRiding(fn,hlPaths);
+  });
+
+  const container=document.createElement('div');
+  container.id='zp-container';
+  container.style.cssText=`position:absolute;width:${W}px;height:${H}px;transform-origin:0 0`;
+  container.appendChild(svgPolls);
+  container.appendChild(svgRidings);
+  container.appendChild(svgHL);
+  container.appendChild(svgHit);
+
+  wrap.style.cssText='position:absolute;inset:0;overflow:hidden;cursor:grab';
+  wrap.innerHTML='';
+  wrap.appendChild(container);
+  wrap._W=W;wrap._H=H;
+
+  // Use setTimeout to allow layout to complete before reading dimensions
+  zp.scale=1;zp.ox=0;zp.oy=0;
+  requestAnimationFrame(()=>{
+    const aw2=area.offsetWidth||area.clientWidth;
+    const ah2=area.offsetHeight||area.clientHeight;
+    zp.ox=Math.max(0,(aw2-W)/2);
+    zp.oy=Math.max(0,(ah2-H)/2);
+    applyTransform();
+  });
+
+  document.getElementById('ib-name').innerHTML=`<strong>${activeRegion.name}</strong> — hover or click a riding`;
+  document.getElementById('ib-fr').textContent=`${activeRegion.ridingCount} ridings`;
+  ['ib-div','ib-party','ib-div2','ib-stat-pct','ib-stat-margin','ib-stat-swing','ib-stat-pop']
+    .forEach(id=>document.getElementById(id).style.display='none');
+  const bd=document.getElementById('poll-breakdown');
+  if(bd)bd.style.display='none';
+
+  // Remove any existing listeners before re-adding
+  area.removeEventListener('wheel',onWheel);
+  wrap.removeEventListener('mousedown',onDragStart);
+  window.removeEventListener('mousemove',onDragMove);
+  window.removeEventListener('mouseup',onDragEnd);
+  area.addEventListener('wheel',onWheel,{passive:false});
+  wrap.addEventListener('mousedown',onDragStart);
+  window.addEventListener('mousemove',onDragMove);
+  window.addEventListener('mouseup',onDragEnd);
+}
+
+function applyTransform(){
+  const c=document.getElementById('zp-container');
+  if(!c)return;
+  c.style.transform=`translate(${zp.ox}px,${zp.oy}px) scale(${zp.scale})`;
+  const inv=1/zp.scale;
+  // Poll base paths
+  // Poll fill paths (in region view, inside <g> transforms)
+  document.querySelectorAll('#zp-container .base-path').forEach(p=>p.setAttribute('stroke-width',(0.4*inv).toFixed(4)));
+  // Riding outlines
+  document.querySelectorAll('#zp-container .riding-outline').forEach(p=>p.setAttribute('stroke-width',(0.5*inv).toFixed(4)));
+  // Highlight paths
+  document.querySelectorAll('#zp-container .hl-path').forEach(p=>{
+    const w=p.classList.contains('sel-hl')?2:1.5;
+    p.setAttribute('stroke-width',(w*inv).toFixed(4));
+  });
+}
+
+function onWheel(e){
+  e.preventDefault();
+  const area=document.getElementById('detail-map-area');
+  const rect=area.getBoundingClientRect();
+  const mx=e.clientX-rect.left;
+  const my=e.clientY-rect.top;
+  const delta=e.deltaY<0?1.12:1/1.12;
+  const newScale=Math.max(0.5,Math.min(12,zp.scale*delta));
+  // Zoom toward mouse pointer
+  zp.ox=mx-(mx-zp.ox)*(newScale/zp.scale);
+  zp.oy=my-(my-zp.oy)*(newScale/zp.scale);
+  zp.scale=newScale;
+  applyTransform();
+}
+
+function onDragStart(e){
+  if(e.button!==0)return;
+  zp.dragging=true;
+  zp.startX=e.clientX; zp.startY=e.clientY;
+  zp.startOx=zp.ox; zp.startOy=zp.oy;
+  document.getElementById('detail-svg-wrap').style.cursor='grabbing';
+}
+function onDragMove(e){
+  if(!zp.dragging)return;
+  zp.ox=zp.startOx+(e.clientX-zp.startX);
+  zp.oy=zp.startOy+(e.clientY-zp.startY);
+  applyTransform();
+}
+function onDragEnd(){
+  if(!zp.dragging)return;
+  zp.dragging=false;
+  const w=document.getElementById('detail-svg-wrap');
+  if(w)w.style.cursor='grab';
+}
+
+let currentHlPaths={};
+
+// ── Info bar rendering helpers ────────────────────────────────────────────────
+function setInfoBarTitle(name, sub, partyColor) {
+  document.getElementById('ib-name').textContent = name;
+  document.getElementById('ib-fr').textContent = sub || '';
+  const ibr = document.querySelector('.ib-riding');
+  if (ibr) ibr.style.borderRightColor = partyColor || 'var(--border)';
+  const bar = document.getElementById('info-bar');
+  if (bar) bar.style.borderBottomColor = partyColor || 'var(--border)';
+}
+function setInfoBarHint(msg) {
+  document.getElementById('ib-name').innerHTML = `<span class="ib-hint">${msg}</span>`;
+  document.getElementById('ib-fr').textContent = '';
+  const bd = document.getElementById('poll-breakdown');
+  if (bd) { bd.innerHTML = ''; bd.style.display = 'none'; }
+  const ibr = document.querySelector('.ib-riding');
+  if (ibr) ibr.style.borderRightColor = 'var(--border)';
+  const bar = document.getElementById('info-bar');
+  if (bar) bar.style.borderBottomColor = 'var(--border)';
+}
+
+function renderPartyBars(bd, partyData, winnerParty, opts) {
+  // partyData: [{party, v25, p25, v21, p21, chg, cand}] sorted desc by v25
+  // opts: {showSwing, showCand, totalVotes}
+  bd.innerHTML = '';
+  bd.style.display = 'flex';
+  bd.style.alignItems = 'stretch';
+  bd.style.gap = '0';
+  bd.style.overflow = 'hidden';
+  bd.style.width = '100%';
+
+  const top5 = partyData.slice(0, 5);
+  const colW = Math.floor(100 / top5.length);
+
+  top5.forEach((d, i) => {
+    const color = PC[d.party] || '#888780';
+    const isWin = d.party === winnerParty;
+    const col = document.createElement('div');
+    col.style.cssText = `flex:1;padding:0 8px;${i>0?'border-left:1px solid var(--border)':''}`;
+
+    // Party label + candidate
+    const lbl = document.createElement('div');
+    lbl.style.cssText = `display:flex;align-items:baseline;gap:5px;margin-bottom:2px`;
+    lbl.innerHTML = `
+      <span style="font-size:11px;font-weight:700;color:${color}">${d.party}</span>
+      ${opts.showCand && d.cand ? `<span style="font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px">${d.cand}</span>` : ''}
+      ${isWin ? `<span style="font-size:9px;color:${color};margin-left:auto">✓ Won</span>` : ''}`;
+    col.appendChild(lbl);
+
+    // Bar + 2025%
+    const barRow = document.createElement('div');
+    barRow.style.cssText = 'display:flex;align-items:center;gap:5px';
+    barRow.innerHTML = `
+      <div style="flex:1;background:#f0ede6;border-radius:2px;height:6px;overflow:hidden">
+        <div style="width:${d.p25||0}%;height:100%;background:${color};border-radius:2px"></div>
+      </div>
+      <span style="font-size:11px;font-weight:${isWin?'700':'500'};color:${color};white-space:nowrap">${d.p25!=null?d.p25.toFixed(1)+'%':'—'}</span>`;
+    col.appendChild(barRow);
+
+    // Swing row
+    if (opts.showSwing && d.chg != null) {
+      const swing = document.createElement('div');
+      const sc = d.chg > 0 ? '#276221' : d.chg < 0 ? '#9C0006' : 'var(--muted)';
+      swing.style.cssText = `font-size:9px;color:${sc};margin-top:1px`;
+      swing.textContent = (d.chg > 0 ? '+' : '') + d.chg.toFixed(1) + ' vs 2021';
+      col.appendChild(swing);
+    }
+
+    bd.appendChild(col);
+  });
+
+  // Total votes at far right if provided
+  if (opts.totalVotes) {
+    const tot = document.createElement('div');
+    tot.style.cssText = 'flex-shrink:0;padding-left:10px;border-left:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;font-size:10px;color:var(--muted);text-align:right;white-space:nowrap';
+    tot.innerHTML = `<div style="font-weight:600;color:var(--text);font-size:12px">${opts.totalVotes.toLocaleString()}</div><div>total votes</div>`;
+    bd.appendChild(tot);
+  }
+}
+
+function showRidingInfoBar(rd) {
+  const res = RESULTS_RICH[rd.fedNum] || RESULTS_RICH[String(rd.fedNum)] || {};
+  const party = res.party || 'TBD';
+
+  setInfoBarTitle(rd.nameEn, rd.nameFr || '', PC[party] || null);
+
+  ['ib-div','ib-party','ib-div2','ib-stat-pct','ib-stat-margin','ib-stat-swing','ib-stat-pop']
+    .forEach(id => document.getElementById(id).style.display = 'none');
+
+  const bd = document.getElementById('poll-breakdown');
+  if (!bd || !res.party) return;
+
+  const parties = res.parties || {};
+  const sorted = Object.entries(parties)
+    .map(([p, d]) => ({party:p, ...d}))
+    .filter(d => d.v25 > 0)
+    .sort((a,b) => b.v25 - a.v25);
+
+  renderPartyBars(bd, sorted, party, {showSwing:true, showCand:true, totalVotes:res.total});
+}
+
+function clearRidingInfoBar() {
+  document.getElementById('ib-name').innerHTML = `<strong>${activeRegion ? activeRegion.name : ''}</strong> — hover or click a riding`;
+  document.getElementById('ib-fr').textContent = activeRegion ? `${activeRegion.ridingCount} ridings` : '';
+  ['ib-div','ib-party','ib-div2','ib-stat-pct','ib-stat-margin','ib-stat-swing','ib-stat-pop']
+    .forEach(id => document.getElementById(id).style.display = 'none');
+  const bd = document.getElementById('poll-breakdown');
+  if (bd) bd.style.display = 'none';
+}
+
+function showHl(fedNum){
+  // Show hover highlight (unless it is the selected one, keep gold)
+  if(currentHlPaths[fedNum])currentHlPaths[fedNum].style.display='';
+}
+function hideHl(fedNum){
+  const p=currentHlPaths[fedNum];
+  if(p&&!p.classList.contains('sel-hl'))p.style.display='none';
+}
+function selectRiding(fn, hlPaths){
+  // When user clicks a riding, load poll view and return
+  showPollView(fn);
+  return;
+
+  if(hlPaths)currentHlPaths=hlPaths;
+  const fedNum=Number(fn)||fn;
+  const rd=activeRegion.ridings.find(r=>r.fedNum==fedNum||r.fedNum==fn);if(!rd)return;
+  // Clear all sel-hl, hide non-hovered
+  Object.entries(currentHlPaths).forEach(([k,p])=>{
+    p.classList.remove('sel-hl');
+    p.style.display='none';
+  });
+  // Mark selected
+  const selP=currentHlPaths[rd.fedNum]||currentHlPaths[fn];
+  if(selP){selP.classList.add('sel-hl');selP.style.display='';selP.setAttribute('stroke-width',(2/zp.scale).toFixed(4));}
+  // Update info bar
+  document.getElementById('ib-name').textContent=rd.nameEn;
+  document.getElementById('ib-fr').textContent=rd.nameFr||'';
+  const res=RESULTS[rd.fedNum]||{};const party=res.party||'TBD';
+  document.getElementById('ib-pdot').style.background=pc(party);
+  document.getElementById('ib-pname').textContent=PL[party]||party;
+  document.getElementById('ib-cand').textContent=res.candidate||'';
+  const pctEl=document.getElementById('ib-pct');
+  pctEl.textContent=res.votePct!=null?res.votePct.toFixed(1)+'%':'—';
+  const mEl=document.getElementById('ib-margin');
+  mEl.textContent=res.margin!=null?res.margin.toFixed(1)+'%':'—';mEl.className='ib-sv';
+  const sEl=document.getElementById('ib-swing');
+  if(res.swing!=null){sEl.textContent=(res.swing>0?'+':'')+res.swing.toFixed(1);sEl.className='ib-sv '+(res.swing>0?'pos':'neg');}
+  else{sEl.textContent='—';sEl.className='ib-sv';}
+  document.getElementById('ib-pop').textContent=rd.pop?rd.pop.toLocaleString():'—';
+  // Show all info bar elements
+  ['ib-div','ib-party','ib-div2','ib-stat-pct','ib-stat-margin','ib-stat-swing','ib-stat-pop'].forEach(id=>{
+    document.getElementById(id).style.display='';
+  });
+}
+
+
+function showOverview(){
+  // Remove zoom/pan listeners
+  const area=document.getElementById('detail-map-area');
+  area.removeEventListener('wheel',onWheel);
+  window.removeEventListener('mousemove',onDragMove);
+  window.removeEventListener('mouseup',onDragEnd);
+  document.getElementById('overview').style.display='';
+  document.getElementById('detail-view').classList.remove('vis');
+  document.getElementById('back-btn').classList.remove('vis');
+  document.getElementById('region-badge').classList.remove('vis');
+  activeRegion=null;
+}
+
+function updateSeatBar(){
+  const c={LPC:0,CPC:0,NDP:0,BQ:0,GPC:0,OTH:0};
+  Object.values(RESULTS).forEach(r=>{if(!r.party)return;c[r.party]!=null?c[r.party]++:c.OTH++});
+  ['LPC','CPC','NDP','BQ','GPC'].forEach(p=>{
+    document.getElementById(`sc-${p.toLowerCase()}`).textContent=`${p} ${c[p]||'—'}`;
+    document.getElementById(`sb-${p.toLowerCase()}`).style.width=(c[p]/343*100).toFixed(1)+'%';
+  });
+  document.getElementById('sb-oth').style.width=(c.OTH/343*100).toFixed(1)+'%';
+}
+
+function init(){REGIONS.forEach(r=>RBK[r.key]=r);renderOverview();updateSeatBar();}
+
+
+// ── Boot: load external data files then init ─────────────────────────────────
+async function loadResults() {
+  const res = await fetch('results.csv');
+  const text = await res.text();
+  const lines = text.trim().split('\n').slice(1); // skip header
+  const results = {};
+  lines.forEach(line => {
+    // Parse CSV row respecting quoted fields
+    const cols = [];
+    let cur = '', inQ = false;
+    for (const ch of line) {
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cols.push(cur); cur = ''; }
+      else { cur += ch; }
+    }
+    cols.push(cur);
+    const [fedNum, , party, candidate, votePct, margin] = cols;
+    if (fedNum && party) {
+      results[parseInt(fedNum)] = {
+        party: party.trim(),
+        candidate: candidate.trim(),
+        votePct: parseFloat(votePct),
+        margin: parseFloat(margin),
+      };
+    }
+  });
+  return results;
+}
+
+
+// Province prefix → poll file mapping
+const PROV_PREFIX = {
+  '10':'NL','11':'PEI','12':'NS','13':'NB','24':'QC','35':'ON',
+  '46':'MB','47':'SK','48':'AB','59':'BC','60':'YT','61':'NT','62':'NU'
+};
+window.POLLS_DATA = window.POLLS_DATA || {};
+const POLLS_LOADING = {};
+
+function getPollFile(fedNum) {
+  const prefix = String(fedNum).slice(0,2);
+  return 'polls_' + (PROV_PREFIX[prefix] || 'XX') + '.js';
+}
+
+function loadPolls(fedNum) {
+  return new Promise((resolve) => {
+    if (window.POLLS_DATA[fedNum]) { resolve(window.POLLS_DATA[fedNum]); return; }
+    const file = getPollFile(fedNum);
+    if (POLLS_LOADING[file]) {
+      // Already loading or done — wait for it
+      const check = setInterval(() => {
+        if (window.POLLS_DATA[fedNum]) { clearInterval(check); resolve(window.POLLS_DATA[fedNum]); }
+      }, 50);
+      return;
+    }
+    POLLS_LOADING[file] = 'loading';
+    const s = document.createElement('script');
+    s.src = file;
+    s.onload = () => { POLLS_LOADING[file] = 'done'; resolve(window.POLLS_DATA[fedNum]); };
+    document.head.appendChild(s);
+  });
+}
+
+
+// ── Poll view ─────────────────────────────────────────────────────────────────
+let pollHovPath = null;
+let currentPollHlPaths = {};
+let activePollRiding = null;
+
+function showPollView(fedNum) {
+  activePollRiding = fedNum;
+  const rd = activeRegion && activeRegion.ridings.find(r => r.fedNum == fedNum);
+  document.getElementById('detail-svg-wrap').innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:center;height:200px;color:var(--muted);font-size:13px;">Loading polls...</div>';
+  // Show back button immediately
+  document.getElementById('back-polls-btn').style.display='flex';
+  document.getElementById('back-polls-btn').textContent='← Back to Region';
+
+  loadPolls(fedNum).then(pollData => {
+    if (!pollData || activePollRiding !== fedNum) return;
+    buildPollMap(pollData, rd);
+  });
+}
+
+function buildPollMap(pollData, rd) {
+  pollHovPath = null; currentPollHlPaths = {};
+  const wrap = document.getElementById('detail-svg-wrap');
+  wrap.innerHTML = '';
+  const area = document.getElementById('detail-map-area');
+  const aw = area.clientWidth - 24, ah = area.clientHeight - 24;
+  const scale = Math.min(aw / pollData.vbW, ah / pollData.vbH, 6);
+  const W = Math.round(pollData.vbW * scale);
+  const H = Math.round(pollData.vbH * scale);
+
+  const ns = 'http://www.w3.org/2000/svg';
+
+  // Base SVG
+  const svgBase = document.createElementNS(ns, 'svg');
+  svgBase.setAttribute('viewBox', `0 0 ${pollData.vbW} ${pollData.vbH}`);
+  svgBase.setAttribute('width', W); svgBase.setAttribute('height', H);
+  svgBase.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none';
+
+  // Highlight SVG
+  const svgHL = document.createElementNS(ns, 'svg');
+  svgHL.setAttribute('viewBox', `0 0 ${pollData.vbW} ${pollData.vbH}`);
+  svgHL.setAttribute('width', W); svgHL.setAttribute('height', H);
+  svgHL.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none';
+
+  // Hit SVG
+  const svgHit = document.createElementNS(ns, 'svg');
+  svgHit.setAttribute('viewBox', `0 0 ${pollData.vbW} ${pollData.vbH}`);
+  svgHit.setAttribute('width', W); svgHit.setAttribute('height', H);
+  svgHit.style.cssText = 'position:absolute;top:0;left:0;cursor:pointer';
+
+  pollData.polls.forEach(poll => {
+    // Base
+    const pBase = document.createElementNS(ns, 'path');
+    const pollFill = poll.winner ? blendColor(PC[poll.winner]||'#888780', poll.margin||0) : '#333';
+    pBase.setAttribute('d', poll.d);
+    pBase.setAttribute('fill', pollFill);
+    pBase.setAttribute('stroke', pollFill);
+    pBase.setAttribute('stroke-width', '0.4');
+    pBase.setAttribute('stroke-linejoin', 'round');
+    pBase.classList.add('base-path');
+    svgBase.appendChild(pBase);
+
+    // Highlight
+    const pHL = document.createElementNS(ns, 'path');
+    pHL.setAttribute('d', poll.d);
+    pHL.setAttribute('fill', 'none');
+    pHL.setAttribute('stroke', '#FFD700');
+    pHL.setAttribute('stroke-width', '1.5');
+    pHL.setAttribute('stroke-linejoin', 'round');
+    pHL.classList.add('hl-path');
+    pHL.style.display = 'none';
+    currentPollHlPaths[poll.pd] = pHL;
+    svgHL.appendChild(pHL);
+
+    // Hit
+    const pHit = document.createElementNS(ns, 'path');
+    pHit.setAttribute('d', poll.d);
+    pHit.setAttribute('fill', 'transparent');
+    pHit.setAttribute('stroke', 'none');
+    pHit.dataset.pd = poll.pd;
+    pHit.addEventListener('mouseenter', () => {
+      // Clear previous
+      if (pollHovPath && pollHovPath !== poll.pd) {
+        const prev = currentPollHlPaths[pollHovPath];
+        if (prev) { prev.style.display = 'none'; }
+      }
+      pollHovPath = poll.pd;
+      const hl = currentPollHlPaths[poll.pd];
+      if (hl) { hl.style.display = ''; hl.setAttribute('stroke-width',(1.5/zp.scale).toFixed(4)); }
+      updatePollInfoBar(poll);
+    });
+    pHit.addEventListener('mouseleave', () => {
+      const hl = currentPollHlPaths[poll.pd];
+      if (hl) hl.style.display = 'none';
+      if (pollHovPath === poll.pd) pollHovPath = null;
+    });
+    pHit.addEventListener('click', () => selectPoll(poll));
+    svgHit.appendChild(pHit);
+  });
+
+  const container = document.createElement('div');
+  container.id = 'zp-container';
+  container.style.cssText = `position:absolute;width:${W}px;height:${H}px;transform-origin:0 0`;
+  container.appendChild(svgBase);
+  container.appendChild(svgHL);
+  container.appendChild(svgHit);
+
+  wrap.style.cssText = 'position:absolute;inset:0;overflow:hidden;cursor:grab';
+  wrap.appendChild(container);
+  wrap._W = W; wrap._H = H;
+
+  zp.scale = 1; zp.ox = 0; zp.oy = 0;
+  requestAnimationFrame(()=>{
+    const aw2=area.offsetWidth||area.clientWidth;
+    const ah2=area.offsetHeight||area.clientHeight;
+    zp.ox=Math.max(0,(aw2-W)/2);
+    zp.oy=Math.max(0,(ah2-H)/2);
+    applyTransform();
+  });
+
+  // Update info bar
+  const rname = rd ? rd.nameEn : `Riding ${activePollRiding}`;
+  document.getElementById('ib-name').innerHTML = `<strong>${rname}</strong> — hover or click a poll`;
+  document.getElementById('ib-fr').textContent = `${pollData.polls.length} polling divisions`;
+  const bd = document.getElementById('poll-breakdown');
+  if (bd) bd.style.display = 'none';
+  ['ib-div','ib-party','ib-div2','ib-stat-pct','ib-stat-margin','ib-stat-swing','ib-stat-pop']
+    .forEach(id => document.getElementById(id).style.display = 'none');
+
+  // Show back-to-riding button
+  document.getElementById('back-polls-btn').style.display='flex';
+}
+
+function selectPoll(poll) {
+  // Clear all sel-hl
+  Object.values(currentPollHlPaths).forEach(p => {
+    p.classList.remove('sel-hl'); p.style.display = 'none';
+  });
+  const selP = currentPollHlPaths[poll.pd];
+  if (selP) {
+    selP.classList.add('sel-hl');
+    selP.style.display = '';
+    selP.setAttribute('stroke-width', (2/zp.scale).toFixed(4));
+  }
+  updatePollInfoBar(poll);
+}
+
+function updatePollInfoBar(poll) {
+  const total = poll.total || 0;
+  const winner = poll.winner;
+  const rdObj = activeRegion && activeRegion.ridings.find(r => r.fedNum == activePollRiding);
+  const pdDisplay = String(poll.pd).replace(/-0$/, '');
+  const pollParty = winner ? PC[winner] : null;
+  setInfoBarTitle(
+    rdObj ? rdObj.nameEn : `Riding ${activePollRiding}`,
+    `Poll ${pdDisplay}${total ? ' · ' + total.toLocaleString() + ' votes' : ''}`,
+    pollParty
+  );
+  ['ib-div','ib-party','ib-div2','ib-stat-pct','ib-stat-margin','ib-stat-swing','ib-stat-pop']
+    .forEach(id => document.getElementById(id).style.display = 'none');
+  const bd = document.getElementById('poll-breakdown');
+  if (!bd || !poll.parties || !total) return;
+  const sorted = Object.entries(poll.parties)
+    .map(([p, d]) => ({party:p, v25:d.v, p25:d.pct, chg:null, cand:null}))
+    .filter(d => d.v25 > 0)
+    .sort((a,b) => b.v25 - a.v25);
+  renderPartyBars(bd, sorted, winner, {showSwing:false, showCand:false, totalVotes:null});
+}
+function backToRiding() {
+  activePollRiding = null;
+  pollHovPath = null; currentPollHlPaths = {};
+  document.getElementById('back-polls-btn').style.display='none';
+  document.getElementById('region-badge').textContent = activeRegion ? activeRegion.name : '';
+  // Re-render the region view with polls underneath
+  if (activeRegion) buildDetailMap();
+}
+
+
+
+// Declare RESULTS_RICH globally so showRidingInfoBar can access it
+const RESULTS_RICH = {};
+
+async function loadResultsRich() {
+  const res = await fetch('results_rich.csv');
+  const text = await res.text();
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',');
+  const PARTIES = ['LPC','CPC','NDP','BQ','GPC','PPC','OTH'];
+
+  lines.slice(1).forEach(line => {
+    // Parse CSV respecting quoted fields
+    const cols = [];
+    let cur = '', inQ = false;
+    for (const ch of line) {
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cols.push(cur); cur = ''; }
+      else { cur += ch; }
+    }
+    cols.push(cur);
+
+    const get = (name) => {
+      const idx = headers.indexOf(name);
+      return idx >= 0 ? cols[idx] : '';
+    };
+    const num = (name) => { const v = parseFloat(get(name)); return isNaN(v) ? null : v; };
+
+    const fed = get('fedNum');
+    if (!fed) return;
+
+    const parties = {};
+    PARTIES.forEach(p => {
+      const v25 = num(`${p}_v25`);
+      const p25 = num(`${p}_p25`);
+      if (v25 || p25) {
+        parties[p] = {
+          v25: v25 || 0,
+          p25: p25 || 0,
+          v21: num(`${p}_v21`),
+          p21: num(`${p}_p21`),
+          chg: num(`${p}_chg`),
+          cand: get(`${p}_cand`) || null,
+        };
+      }
+    });
+
+    RESULTS_RICH[fed] = {
+      party:    get('party'),
+      winner:   get('winner'),
+      total:    num('total'),
+      majority: num('majority'),
+      majPct:   num('majPct'),
+      parties,
+    };
+  });
+}
+
+async function boot() {
+  try {
+    const results = await loadResults();
+    Object.assign(RESULTS, results);
+  } catch(e) {
+    console.warn('Could not load results.csv:', e.message);
+  }
+  try {
+    await loadResultsRich();
+  } catch(e) {
+    console.warn('Could not load results_rich.csv:', e.message);
+  }
+  REGIONS.forEach(r => RBK[r.key] = r);
+  renderOverview();
+  updateSeatBar();
+}
+
+boot();
+</script>
+</body>
+</html>
